@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Cache-Control" content="no-cache">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karantina:wght@400;700&family=IBM+Plex+Sans+Hebrew:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Secular+One&display=swap" rel="stylesheet">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Osint Agent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#EDEFF2">
+<title>תמונת מצב · סוכן אוסינט</title>
+<style>
+@font-face{font-family:"Aduma";src:url(fonts/aduma-medium.woff) format("woff");font-weight:400 600;font-display:swap}
+@font-face{font-family:"Aduma";src:url(fonts/aduma-bold.woff) format("woff");font-weight:700 900;font-display:swap}
+:root{--bg:#EDEFF2;--paper:#FFFFFF;--ink:#0E1621;--dim:#465263;--faint:#8A95A4;--edge:#DCE1E8;
+--steel:#1C2A3D;--hot:#C8102E;--warm:#C96A00;--cool:#1F5FA8;
+--head:"Karantina","Aduma","Secular One","IBM Plex Sans Hebrew",sans-serif;
+--body:"IBM Plex Sans Hebrew",-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;
+--cut:18px;--sh:0 1px 0 rgba(255,255,255,.9) inset,0 10px 28px -14px rgba(20,30,45,.35),0 2px 6px -2px rgba(20,30,45,.12)}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;color:var(--ink);font-family:var(--body);line-height:1.6;min-height:100vh;position:relative;overflow-x:hidden}
+/* רקע: רצועות אלכסוניות בגווני לבן-אפור והצללה רכה, עם קווי פס דקים — בהשראת התמונות */
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+background:
+ linear-gradient(135deg,transparent 0 22%,#FBFCFD 22% 34%,rgba(30,40,55,.10) 34%,transparent 38%),
+ linear-gradient(45deg,transparent 0 44%,#FFFFFF 44% 58%,rgba(30,40,55,.12) 58%,transparent 62%),
+ linear-gradient(135deg,transparent 0 60%,rgba(30,40,55,.09) 60%,#F9FAFB 61.5% 74%,rgba(30,40,55,.08) 74%,transparent 78%),
+ linear-gradient(45deg,transparent 0 8%,#F7F8FA 8% 20%,rgba(30,40,55,.07) 20%,transparent 24%),
+ linear-gradient(180deg,#ECEEF1,#DCE0E5)}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+background:repeating-linear-gradient(-45deg,rgba(255,255,255,1) 0 1.5px,transparent 1.5px 9px);
+-webkit-mask:linear-gradient(135deg,transparent 0 62%,#000 68% 74%,transparent 80%);mask:linear-gradient(135deg,transparent 0 62%,#000 68% 74%,transparent 80%)}
+.wrap{max-width:1120px;margin:0 auto;padding:calc(18px + env(safe-area-inset-top)) 16px 48px}
+.mono{font-family:var(--mono);letter-spacing:.5px}
+/* כותרת */
+.top{display:flex;align-items:center;gap:16px;padding:14px 18px;background:rgba(255,255,255,.72);
+backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:var(--sh);
+clip-path:polygon(0 0,100% 0,100% 100%,var(--cut) 100%,0 calc(100% - var(--cut)))}
+.top img{height:64px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.18))}
+.top h1{margin:0;font-family:var(--head);font-weight:700;font-size:54px;line-height:1;letter-spacing:.5px}
+.top h1 .unit{display:block;font-size:26px;color:var(--dim);font-weight:400;margin-top:4px;letter-spacing:1px}
+.top p{margin:6px 0 0;color:var(--dim);font-size:14px}
+.upd{margin-inline-start:auto;text-align:left;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.upd .dtg{font-family:var(--head);font-weight:700;font-size:28px;line-height:1.1;color:var(--steel);letter-spacing:.3px}.upd .dtg b{color:var(--hot);margin:0 6px;font-weight:700}
+.upd .clr{white-space:nowrap;font-size:11px;letter-spacing:2px;color:#fff;background:var(--steel);padding:2px 8px}
+.upd small{color:var(--faint);font-size:12px}
+/* פעולות */
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.btn{flex:1 1 220px;display:flex;flex-direction:column;align-items:center;padding:12px 14px;text-decoration:none;
+background:var(--steel);color:#fff;box-shadow:var(--sh);clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px)}
+.btn span{font-family:var(--head);font-size:32px;line-height:1.1;font-weight:700;letter-spacing:.5px}
+.btn small{font-size:12px;opacity:.75}
+.btn.alt{background:var(--paper);color:var(--ink)}
+.run{flex:1 1 100%;padding:12px;border:0;cursor:pointer;color:#fff;font-family:var(--head);font-size:30px;font-weight:700;letter-spacing:.5px;
+background:repeating-linear-gradient(-45deg,rgba(255,255,255,.07) 0 2px,transparent 2px 10px),linear-gradient(180deg,#B5162F,#8E0F24);
+box-shadow:var(--sh);clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px)}
+.run:disabled{opacity:.55;cursor:wait}
+.runstate{flex:1 1 100%;text-align:center;color:var(--dim);font-size:14px}
+/* עיקר */
+.main{position:relative;display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;padding:14px 16px;color:#fff;
+background:repeating-linear-gradient(-45deg,rgba(255,255,255,.04) 0 2px,transparent 2px 12px),linear-gradient(135deg,#1C2A3D,#0E1621);
+box-shadow:var(--sh);clip-path:polygon(0 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%)}
+.main .tag{flex:none;font-family:var(--head);font-size:32px;font-weight:700;line-height:1;padding:6px 10px 4px;background:var(--hot)}
+.main p{margin:0;font-weight:500;font-size:16px;line-height:1.65}
+/* כרטיסי זירה */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;align-items:start}
+.card{position:relative;background:var(--paper);box-shadow:var(--sh);padding:0 0 10px;
+clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,0 100%);animation:in .5s ease both;animation-delay:calc(var(--i) * 70ms)}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:var(--c)}
+.card{--c:var(--cool)}.card.hot{--c:var(--hot)}.card.warm{--c:var(--warm)}
+.card header{display:flex;align-items:center;gap:12px;padding:16px 14px 12px;
+background:linear-gradient(135deg,#F7F8FA 0 55%,#EEF1F4 55% 70%,#F7F8FA 70%);border-bottom:1px solid var(--edge)}
+.emb{width:56px;height:56px;flex:none;filter:drop-shadow(0 3px 5px rgba(0,0,0,.25))}
+.emb.gl{border-radius:50%;background:#0E1621;display:flex;align-items:center;justify-content:center}
+.glb{width:38px;height:38px;fill:none;stroke:#fff;stroke-width:2}
+.ttl{min-width:0}
+.kick{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:1.8px;color:var(--faint);direction:ltr;text-align:right}
+.card h2{margin:0;font-family:var(--head);font-weight:700;font-size:40px;line-height:1.05;letter-spacing:.3px}
+.cmd{margin:2px 0 0;font-size:12.5px;color:var(--dim)}
+.hside{margin-inline-start:auto;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.chip{font-size:13px;font-weight:600;color:#fff;background:var(--c);padding:2px 12px;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+.hflags{display:flex;gap:4px}.hflag{width:30px;height:22px;object-fit:cover;box-shadow:0 0 0 1px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.15)}
+.card ul{margin:0;padding:6px 14px 0 14px;list-style:none;color:var(--dim);font-size:15px}
+.card li{position:relative;margin:6px 0;padding-inline-start:16px}
+.card li::before{content:"";position:absolute;inset-inline-start:0;top:.62em;width:7px;height:7px;background:var(--c);transform:rotate(45deg)}
+.card li b{color:var(--ink)}
+.card li.sub{display:flex;align-items:center;gap:8px;margin:14px 0 4px;padding:0 0 4px;border-bottom:1px solid var(--edge);
+font-family:var(--head);font-weight:700;font-size:28px;color:var(--ink);line-height:1.1}
+.card li.sub::before{display:none}.card li.sub:first-child{margin-top:6px}
+.flag{width:26px;height:19px;object-fit:cover;box-shadow:0 0 0 1px rgba(0,0,0,.12)}.nofl{width:8px;height:8px;background:var(--steel);transform:rotate(45deg)}
+.sig{margin:10px 14px 0;padding:8px 12px;background:#F1F4F8;border-inline-start:3px solid var(--steel);color:var(--ink);font-size:14.5px;line-height:1.55}
+.sig b{font-family:var(--head);font-size:24px;margin-inline-end:8px;color:var(--steel)}
+/* ארכיון */
+h3{margin:30px 0 10px;font-family:var(--head);font-size:36px;font-weight:700;display:flex;align-items:center;gap:10px}
+h3::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--faint))}
+.arch{list-style:none;padding:0;margin:0;background:rgba(255,255,255,.8);box-shadow:var(--sh)}
+.arch li{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-top:1px solid var(--edge)}
+.arch li:first-child{border-top:0}.arch .lk{display:flex;gap:6px}
+.arch a{color:var(--steel);text-decoration:none;font-size:13px;font-weight:600;padding:2px 10px;border:1px solid var(--edge);background:#fff}
+footer{margin-top:28px;color:var(--faint);font-size:12px;text-align:center;letter-spacing:.5px}
+/* שכבות */
+.busy{position:fixed;inset:0;background:rgba(237,239,242,.94);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:8;padding:24px}.busy[hidden]{display:none}
+.busycard{text-align:center;max-width:340px}.busycard b{display:block;font-family:var(--head);font-size:40px;margin:14px 0 6px}#busystage{font-size:17px}.busycard small{display:block;color:var(--faint);margin-top:4px}.busycard p{color:var(--dim);font-size:14px;margin-top:16px}
+.spin{width:46px;height:46px;margin:0 auto;border:5px solid var(--edge);border-top-color:var(--hot);border-radius:50%;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+body.isbusy .dl a,body.isbusy .dl button,body.isbusy .arch a{pointer-events:none;opacity:.4}
+.pinbox{position:fixed;inset:0;background:rgba(14,22,33,.55);display:flex;align-items:center;justify-content:center;z-index:9;padding:20px}.pinbox[hidden]{display:none}
+.pinform{background:#fff;padding:20px;width:100%;max-width:340px;text-align:center;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%)}
+.pinform b{font-family:var(--head);font-size:38px}.pinform p{color:var(--dim);font-size:14px;margin:6px 0 14px}
+.pinform input{width:100%;font-family:var(--mono);font-size:28px;letter-spacing:8px;text-align:center;padding:10px;border:1.5px solid var(--edge);direction:ltr}
+.pinerr{min-height:22px;color:var(--hot);font-size:14px;margin:6px 0}.pinbtns{display:flex;flex-direction:column;gap:8px}.pincancel{background:none;border:0;color:var(--dim);font:inherit;padding:8px;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.card{animation:none}}
+@media (max-width:640px){
+.wrap{padding-left:12px;padding-right:12px}
+.top{flex-wrap:wrap;gap:10px 12px;padding:12px}
+.top img{height:58px}.top h1{font-size:50px}.top h1 .unit{font-size:24px}.upd small{display:none}
+.upd{margin-inline-start:0;flex:1 1 100%;flex-direction:row;align-items:center;justify-content:space-between;border-top:1px solid var(--edge);padding-top:8px}
+.upd .dtg{font-size:26px}
+.btn{flex:1 1 40%;padding:10px 6px}.btn span{font-size:29px}
+.main{flex-direction:column;gap:8px}.main p{font-size:15.5px}
+.grid{gap:12px;grid-template-columns:1fr}.card h2{font-size:38px}.card ul{font-size:15.5px}
+}
+</style></head><body data-stamp="2026-10-03-1945" data-build="1791045947"><div class="wrap">
+<div class="top"><img src="logo.png?v=1791045947" alt=""><div><h1>סוכן אוסינט<span class="unit">ענף מבצעים חמ״ץ</span></h1>
+</div><div class="upd"><span class="clr">בלמ״ס · מקורות גלויים</span><span class="dtg">3 באוקטובר 2026<b>|</b><bdi>19:45</bdi></span></div></div>
+<div class="dl"><a class="btn" href="latest.pptx?v=2026-10-03-1945" download="OSINT-Slide-2026-10-03-1945.pptx"><span>הורדת שקף</span><small>PowerPoint · תמונת מצב</small></a><a class="btn alt" href="latest.docx?v=2026-10-03-1945" download="OSINT-Report-2026-10-03-1945.docx"><span>הורדת מסמך</span><small>דו״ח אג״מי · 24 שעות</small></a>
+<button class="run" id="runnow" type="button">ריצה מזדמנת</button>
+<div class="runstate" id="runstate" hidden></div></div>
+<div class="main"><span class="tag">עיקר</span><p>הבוקר, בשמחת תורה, תקף צה״ל דירה בעיר עזה כדי לחסל את עלי אל-עאמודי. הוא סגן ראש הלשכה המדינית של חמאס, ונחשב למי שמנהל בפועל את הרצועה. גורלו לא אושר רשמית, ולפי גורם ישראלי הסיכוי ששרד נמוך. במקביל קבע התובע הכללי של האמירויות שניסיון ריסוק טיסת פליי דובאי לישראל (30/9) היה פעולת טרור.</p></div>
+<div class="grid"><section class="card hot" style="--i:0"><header><img class="emb" src="cmd/south.png" alt=""><div class="ttl"><small class="kick">GAZA STRIP</small><h2>זירת דרום</h2><p class="cmd">פיקוד דרום</p></div><div class="hside"><span class="chip">חם</span><span class="hflags"><img class="hflag" src="flags/ps.svg" alt=""></span></div></header><p class="sig"><b>משמעות</b>אם חיסולו של אל-עאמודי יאושר, חמאס איבד את מי שמנהל בפועל את הרצועה. ביום השנה לטבח עלול להגיע ניסיון תגובה. יש לעקוב אחר אישור גורלו ואחר זהות מחליפו.</p><ul><li class="sub"><img class="flag" src="flags/ps.svg" alt=""><span>רצ״ע</span></li><li>הבוקר (שמחת תורה, 3 שנים לטבח): צה״ל תקף דירה בעיר עזה כדי לחסל את עלי אל-עאמודי (JPost)</li><li>אל-עאמודי הוא סגן ראש הלשכה המדינית של חמאס, ונחשב ליורש סינוואר ולמי שמנהל בפועל את הרצועה</li><li>מקורות פלסטיניים: לפחות 5 הרוגים בבניין שהותקף (ynet). גורלו של אל-עאמודי לא אושר רשמית</li><li><b>גורם ישראלי:</b> אל-עאמודי היה בדירה יחד עם מחבלים נוספים, והסיכוי ששרד נמוך</li></ul></section><section class="card warm" style="--i:1"><header><img class="emb" src="cmd/homefront.png" alt=""><div class="ttl"><small class="kick">IRAN · IRAQ · YEMEN</small><h2>זירת מעג״ש</h2><p class="cmd">פיקוד העורף</p></div><div class="hside"><span class="chip">מתפתח</span><span class="hflags"><img class="hflag" src="flags/ir.svg" alt=""></span></div></header><p class="sig"><b>משמעות</b>ארה״ב וסעודיה נערכות לפעולה נגד איראן והחות׳ים, ובים האדום נבנית קואליציה אזורית. הלחץ על הציר גובר, וכך גם הסיכון לתגובה איראנית נגד ישראל. יש לעקוב אחר תגבור הכוחות הימיים.</p><ul><li class="sub"><img class="flag" src="flags/ir.svg" alt=""><span>איראן</span></li><li><b>דיווח (JPost):</b> טראמפ שוקל לחדש את התקיפות באיראן. הפנטגון מתכנן לתגבר את הכוחות הימיים במזה״ת</li><li class="sub"><img class="flag" src="flags/ye.svg" alt=""><span>תימן</span></li><li><b>רויטרס:</b> סעודיה נערכת לפעולה נרחבת נגד החות׳ים, ובה ישתתפו יותר מ-100,000 חיילים תימנים</li><li>שר החוץ של פקיסטן: 6 מדינות רוצות להצטרף ל״ברית מכה״. דיווח (ynet): נערכים למבצע בים האדום</li><li>ה-FBI עצר בארה״ב חשוד שניסה לרכוש לחות׳ים רכיבים לכטב״מים (ר׳ בינ״ל ביטחוני)</li></ul></section><section class="card cool" style="--i:2"><header><img class="emb" src="cmd/north.png" alt=""><div class="ttl"><small class="kick">LEBANON · SYRIA</small><h2>זירת פצ״ן</h2><p class="cmd">פיקוד צפון</p></div><div class="hside"><span class="chip">מעקב</span><span class="hflags"><img class="hflag" src="flags/lb.svg" alt=""><img class="hflag" src="flags/sy.svg" alt=""></span></div></header><p class="sig"><b>משמעות</b>תאונה מבצעית על רקע מזג האוויר, בלי אירוע עוין. אין שינוי במגמה בזירה. בעונת החורף יש להקפיד על נוהלי הנסיעה.</p><ul><li class="sub"><img class="flag" src="flags/lb.svg" alt=""><span>לבנון</span></li><li>לפי התחקיר הראשוני, שני רכבים התנגשו בגלל בוץ וגשם. 6 מהפצועים פונו לבית חולים</li></ul></section><section class="card warm" style="--i:3"><header><img class="emb" src="cmd/central.png" alt=""><div class="ttl"><small class="kick">JUDEA &amp; SAMARIA</small><h2>זירת מרכז</h2><p class="cmd">פיקוד מרכז</p></div><div class="hside"><span class="chip">מתפתח</span><span class="hflags"><img class="hflag" src="flags/ps.svg" alt=""></span></div></header><p class="sig"><b>משמעות</b>פורעים יהודים פגעו במוסקים בשומרון ונמלטו לפני שהכוחות הגיעו. אירועים כאלה מעמיסים על הכוחות ועלולים להצית הסלמה מקומית. יש לעקוב אחר אזורי המסיק בחטיבת שומרון.</p><ul><li class="sub"><img class="flag" src="flags/ps.svg" alt=""><span>איו״ש</span></li><li>הבוקר תקפו פורעים יהודים פלסטינים ורכוש בעוצרין (דרום-מזרח לשכם, חטיבת שומרון)</li><li>לפי הפלסטינים, הפורעים תקפו באלות פלסטיני בן 50 במסיק, ושטחים הוצתו צפונית לשכם (שומרון) (ynet)</li><li><b>דובר צה״ל:</b> הפורעים נמלטו לפני שהכוחות הגיעו. משטרת מחוז ש״י (תחנת אריאל) פתחה בחקירה ואוספת ראיות</li></ul></section><section class="card hot" style="--i:4"><header><div class="emb gl"><svg viewBox="0 0 48 48" class="glb" aria-hidden="true"><circle cx="24" cy="24" r="21"/><ellipse cx="24" cy="24" rx="9" ry="21"/><path d="M3 24h42M7 13h34M7 35h34"/></svg></div><div class="ttl"><small class="kick">INTERNATIONAL</small><h2>בינ״ל ביטחוני</h2></div><div class="hside"><span class="chip">חם</span><span class="hflags"><img class="hflag" src="flags/un.svg" alt=""></span></div></header><p class="sig"><b>משמעות</b>קביעת האמירויות והודאת המפגע מאשרות שהייתה כוונה לפגוע בתעופה לישראל. באירופה מתווסף איום בהכוונת איראן על בסיסי ארה״ב. יש לעקוב אחר ניסיונות חיקוי ואחר אבטחת הטיסות לישראל.</p><ul><li>המפגע הוא המאם אל-המאמי (אב עומאני, אם סורית). לפי החשד הוקצן בסוריה, ועומאן קרקעה אותו (WSJ, CNN)</li><li>הוא נחקר באמירויות ומשתף פעולה. לפי הפרטים שנמסרו, הודה שהתכוון לרסק את המטוס בישראל (רויטרס)</li><li>בלילה נחתו בנתב״ג 2 טיסות החילוץ הראשונות מדובאי</li><li><b>NYT:</b> ישראל הזהירה את גרמניה מפני פגיעה בהכוונת איראן בבסיסי ארה״ב ברמשטיין ובשפנגדהלם</li><li>ה-FBI עצר בארה״ב חשוד שניסה לרכוש לחות׳ים רכיבים לכטב״מים</li></ul></section></div>
+<h3>סקירות קודמות</h3><ul class="arch"><li><span class="mono">03.10 12:49</span><span class="lk"><a href="archive/2026-10-03-1249.pptx">שקף</a><a href="archive/2026-10-03-1249.docx">מסמך</a><a href="archive/2026-10-03-1249.txt">טקסט</a></span></li><li><span class="mono">03.10 08:19</span><span class="lk"><a href="archive/2026-10-03-0819.pptx">שקף</a><a href="archive/2026-10-03-0819.docx">מסמך</a><a href="archive/2026-10-03-0819.txt">טקסט</a></span></li><li><span class="mono">02.10 20:04</span><span class="lk"><a href="archive/2026-10-02-2004.pptx">שקף</a><a href="archive/2026-10-02-2004.docx">מסמך</a><a href="archive/2026-10-02-2004.txt">טקסט</a></span></li><li><span class="mono">02.10 12:56</span><span class="lk"><a href="archive/2026-10-02-1256.pptx">שקף</a><a href="archive/2026-10-02-1256.docx">מסמך</a><a href="archive/2026-10-02-1256.txt">טקסט</a></span></li><li><span class="mono">02.10 08:18</span><span class="lk"><a href="archive/2026-10-02-0818.pptx">שקף</a><a href="archive/2026-10-02-0818.docx">מסמך</a><a href="archive/2026-10-02-0818.txt">טקסט</a></span></li><li><span class="mono">01.10 12:48</span><span class="lk"><a href="archive/2026-10-01-1248.pptx">שקף</a><a href="archive/2026-10-01-1248.docx">מסמך</a><a href="archive/2026-10-01-1248.txt">טקסט</a></span></li><li><span class="mono">01.10 08:19</span><span class="lk"><a href="archive/2026-10-01-0819.pptx">שקף</a><a href="archive/2026-10-01-0819.docx">מסמך</a><a href="archive/2026-10-01-0819.txt">טקסט</a></span></li><li><span class="mono">30.09 12:48</span><span class="lk"><a href="archive/2026-09-30-1248.pptx">שקף</a><a href="archive/2026-09-30-1248.docx">מסמך</a><a href="archive/2026-09-30-1248.txt">טקסט</a></span></li><li><span class="mono">30.09 08:18</span><span class="lk"><a href="archive/2026-09-30-0818.pptx">שקף</a><a href="archive/2026-09-30-0818.docx">מסמך</a><a href="archive/2026-09-30-0818.txt">טקסט</a></span></li></ul>
+<footer>לא מסווג · מידע ממקורות גלויים · המידע נכון לשעת הסקירה</footer>
+</div><div class="busy" id="busy" hidden><div class="busycard"><div class="spin"></div><b>סקירה בהכנה</b><div id="busystage"></div><small id="busytime"></small><p>ההורדות והריצה המזדמנת חסומות עד שהסקירה תעלה. הדף יתעדכן לבד.</p></div></div>
+<div class="pinbox" id="pinbox" hidden><form class="pinform" id="pinform">
+<b>ריצה מזדמנת</b><p>הסקירה תישלח לערוץ הטלגרם, ושקף ומסמך חדשים יעלו לאתר.</p>
+<input id="pin" type="password" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="קוד">
+<div class="pinerr" id="pinerr"></div>
+<div class="pinbtns"><button type="submit" class="run">הרץ</button>
+<button type="button" class="pincancel" id="pincancel">ביטול</button></div></form></div>
+<script>
+// טריות + מסך טעינה (אדן, 29.9).
+// 1. באייפון, אפליקציה ממסך הבית מחזיקה את index.html במטמון ורענון לא עוזר.
+//    בכל פתיחה ובכל חזרה לאפליקציה בודקים archive.json בלי מטמון, ואם יש
+//    סקירה חדשה יותר — טוענים מחדש עם ?v=<חותמת>, כתובת שהמטמון לא מכיר.
+//    חזרה אחרי יותר מ-5 דקות ברקע = טעינה מלאה בכל מקרה.
+// 2. status.json נכתב על ידי הריצה עצמה. כש-state=running — מסך טעינה לכל
+//    מי שבאתר, שחוסם ריצה נוספת והורדות. running בן יותר מ-50 דק׳ = ריצה
+//    שמתה באמצע, ולא נועל את האתר.
+(function(){
+var myBuild=document.body.dataset.build, hiddenAt=0, busyLocal=null, timer=null;
+var ov=document.getElementById("busy"), ovStage=document.getElementById("busystage"),
+    ovTime=document.getElementById("busytime");
+function go(v){location.replace(location.pathname+"?v="+encodeURIComponent(v));}
+async function fresh(){
+  try{var v=await (await fetch("version.json?t="+Date.now(),{cache:"no-store"})).json();
+    var cur=new URLSearchParams(location.search).get("v");
+    if(v&&v.build&&v.build!==myBuild&&cur!==v.build){go(v.build);return true;}
+  }catch(e){}
+  return false;
+}
+function show(stage,since){
+  ov.hidden=false;document.body.classList.add("isbusy");
+  ovStage.textContent=stage||"הסקירה בהכנה";
+  var m=since?Math.max(0,Math.round((Date.now()/1000-since)/60)):0;
+  ovTime.textContent=since?("התחילה לפני "+m+" דק׳ · בדרך כלל 5–15"):"";
+}
+function hide(){ov.hidden=true;document.body.classList.remove("isbusy");}
+window.osintBusy=function(stage){busyLocal=stage;if(stage) show(stage,0); else hide(); poll();};
+async function poll(){
+  clearTimeout(timer);
+  var st=null;
+  try{st=await (await fetch("status.json?t="+Date.now(),{cache:"no-store"})).json();}catch(e){}
+  var running=st&&st.state==="running"&&(Date.now()/1000-st.since)<50*60;
+  if(running){show(st.stage,st.since);}
+  else if(busyLocal){show(busyLocal,0);}
+  else{var was=!ov.hidden;hide();if(was&&await fresh()) return;}
+  timer=setTimeout(poll,(running||busyLocal)?8000:45000);
+}
+fresh().then(function(moved){if(!moved) poll();});
+document.addEventListener("visibilitychange",function(){
+  if(document.hidden){hiddenAt=Date.now();return;}
+  if(hiddenAt&&Date.now()-hiddenAt>5*60*1000){go(Date.now());return;}
+  fresh().then(function(m){if(!m) poll();});
+});
+window.addEventListener("pageshow",function(e){if(e.persisted) fresh().then(function(m){if(!m) poll();});});
+})();
+(function(){
+var API="https://api.github.com/repos/luckydan1mc-arch/osint-brief/actions", LOCK={"s": "+SyIoqoyGEZ6+lLj9fyDbw==", "n": "bjZPYHKJivMung/YSyOl5A==", "c": "CbynLHdSVb7RMHffK2Afyc0whBhoaxr9gd91SzYdi6Qc4of+sLWHMWqqJwAmZZL/eoCWKFOZLTd9/wPMP7bjuStfPG/z/ocs1SpUWv5zGQyE4K3TdB6+BeuRCkbt", "t": "z1BuM+ypdzG36FhpY/KmIk7UtJZafZuBO9eMrm8Ixk0=", "i": 600000};
+var STAMP=document.body.dataset.stamp;
+var btn=document.getElementById("runnow"), st=document.getElementById("runstate");
+var box=document.getElementById("pinbox"), pin=document.getElementById("pin"), err=document.getElementById("pinerr");
+if(!LOCK){btn.hidden=true;return;}
+function say(t){st.textContent=t;st.hidden=!t;}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
+function ub(s){return Uint8Array.from(atob(s),function(c){return c.charCodeAt(0);});}
+function cat(a,b){var o=new Uint8Array(a.length+b.length);o.set(a);o.set(b,a.length);return o;}
+async function hm(key,msg){var k=await crypto.subtle.importKey("raw",key,{name:"HMAC",hash:"SHA-256"},false,["sign"]);
+  return new Uint8Array(await crypto.subtle.sign("HMAC",k,msg));}
+async function unlock(code){
+  var base=await crypto.subtle.importKey("raw",new TextEncoder().encode(code),"PBKDF2",false,["deriveBits"]);
+  var km=new Uint8Array(await crypto.subtle.deriveBits({name:"PBKDF2",hash:"SHA-256",salt:ub(LOCK.s),iterations:LOCK.i},base,512));
+  var ke=km.slice(0,32),kmac=km.slice(32),n=ub(LOCK.n),c=ub(LOCK.c),t=ub(LOCK.t);
+  var tag=await hm(kmac,cat(n,c)),ok=tag.length===t.length;
+  for(var i=0;i<t.length;i++) ok=ok&&tag[i]===t[i];
+  if(!ok) return null;
+  var out=new Uint8Array(c.length);
+  for(var j=0;j*32<c.length;j++){var ctr=new Uint8Array([j>>>24&255,j>>>16&255,j>>>8&255,j&255]);
+    var ks=await hm(ke,cat(n,ctr));for(var x=0;x<32&&j*32+x<c.length;x++) out[j*32+x]=c[j*32+x]^ks[x];}
+  return new TextDecoder().decode(out);
+}
+function hdr(tok){return {"Accept":"application/vnd.github+json","Authorization":"Bearer "+tok,"X-GitHub-Api-Version":"2022-11-28"};}
+async function latestRun(tok,since){
+  var r=await fetch(API+"/workflows/brief.yml/runs?event=workflow_dispatch&per_page=5",{headers:hdr(tok),cache:"no-store"});
+  if(!r.ok) throw new Error("GitHub "+r.status);
+  var j=await r.json();
+  return (j.workflow_runs||[]).find(function(x){return Date.parse(x.created_at)>=since-60000;});
+}
+async function waitSite(){
+  for(var i=0;i<40;i++){
+    try{var a=await (await fetch("archive.json?t="+Date.now(),{cache:"no-store"})).json();
+      if(a[0]&&a[0].stamp!==STAMP){location.replace(location.pathname+"?v="+encodeURIComponent(a[0].stamp));return;}}catch(e){}
+    say("הסקירה יצאה · האתר מתעדכן…");await sleep(15000);
+  }
+  say("הסקירה יצאה. האתר יתעדכן בדקות הקרובות — רענן.");
+}
+async function go(tok){
+  btn.disabled=true;var since=Date.now();say("");window.osintBusy("שולח בקשה…");
+  try{
+    var r=await fetch(API+"/workflows/brief.yml/dispatches",{method:"POST",
+      headers:Object.assign(hdr(tok),{"Content-Type":"application/json"}),
+      body:JSON.stringify({ref:"main",inputs:{slot:"ondemand"}})});
+    if(r.status!==204) throw new Error("GitHub דחה את הבקשה ("+r.status+") — ייתכן שהטוקן פג");
+    var run=null;
+    for(var i=0;i<120;i++){
+      await sleep(i<3?5000:15000);
+      run=await latestRun(tok,since);
+      if(!run){window.osintBusy("ממתין שהריצה תתחיל…");continue;}
+      if(run.status!=="completed"){window.osintBusy("הריצה פועלת…");continue;}
+      break;
+    }
+    if(!run||run.status!=="completed") throw new Error("הריצה עדיין לא הסתיימה — בדוק שוב מאוחר יותר");
+    if(run.conclusion!=="success") throw new Error("הריצה לא פרסמה ("+run.conclusion+") — אולי אין חדש מאז הסקירה האחרונה.");
+    window.osintBusy("הסקירה יצאה · האתר מתעדכן…");
+    await waitSite();
+  }catch(e){window.osintBusy(null);say("✗ "+e.message);}
+  btn.disabled=false;
+}
+btn.onclick=function(){err.textContent="";pin.value="";box.hidden=false;setTimeout(function(){pin.focus();},50);};
+document.getElementById("pincancel").onclick=function(){box.hidden=true;};
+document.getElementById("pinform").onsubmit=async function(ev){
+  ev.preventDefault();var code=pin.value.trim();if(!code) return;
+  err.textContent="בודק…";
+  var tok=null;try{tok=await unlock(code);}catch(e){}
+  if(!tok){err.textContent="קוד שגוי";pin.value="";pin.focus();return;}
+  box.hidden=true;go(tok);
+};
+})();
+</script></body></html>
