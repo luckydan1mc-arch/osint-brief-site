@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Cache-Control" content="no-cache">
+<link rel="icon" type="image/png" href="favicon.png?v=1791697539">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karantina:wght@400;700&family=Rubik:wght@400;500;600;700&family=IBM+Plex+Sans+Hebrew:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Secular+One&display=swap" rel="stylesheet">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Osint Agent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#EDEFF2">
+<title>תמונת מצב · סוכן אוסינט</title>
+<style>
+@font-face{font-family:"Aduma";src:url(fonts/aduma-medium.woff) format("woff");font-weight:400 600;font-display:swap}
+@font-face{font-family:"Aduma";src:url(fonts/aduma-bold.woff) format("woff");font-weight:700 900;font-display:swap}
+:root{--bg:#EDEFF2;--paper:#FFFFFF;--ink:#0E1621;--dim:#465263;--faint:#8A95A4;--edge:#DCE1E8;
+--steel:#1C2A3D;--hot:#C8102E;--warm:#C96A00;--cool:#1F5FA8;
+--head:"Karantina","Aduma","Secular One","IBM Plex Sans Hebrew",sans-serif;
+--body:"IBM Plex Sans Hebrew",-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;
+--cut:18px;--sh:0 1px 0 rgba(255,255,255,.9) inset,0 10px 28px -14px rgba(20,30,45,.35),0 2px 6px -2px rgba(20,30,45,.12)}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;color:var(--ink);font-family:var(--body);line-height:1.6;min-height:100vh;position:relative;overflow-x:hidden}
+/* רקע: רצועות אלכסוניות בגווני לבן-אפור והצללה רכה, עם קווי פס דקים — בהשראת התמונות */
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+background:
+ linear-gradient(135deg,transparent 0 22%,#FBFCFD 22% 34%,rgba(30,40,55,.10) 34%,transparent 38%),
+ linear-gradient(45deg,transparent 0 44%,#FFFFFF 44% 58%,rgba(30,40,55,.12) 58%,transparent 62%),
+ linear-gradient(135deg,transparent 0 60%,rgba(30,40,55,.09) 60%,#F9FAFB 61.5% 74%,rgba(30,40,55,.08) 74%,transparent 78%),
+ linear-gradient(45deg,transparent 0 8%,#F7F8FA 8% 20%,rgba(30,40,55,.07) 20%,transparent 24%),
+ linear-gradient(180deg,#ECEEF1,#DCE0E5)}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+background:repeating-linear-gradient(-45deg,rgba(255,255,255,1) 0 1.5px,transparent 1.5px 9px);
+-webkit-mask:linear-gradient(135deg,transparent 0 62%,#000 68% 74%,transparent 80%);mask:linear-gradient(135deg,transparent 0 62%,#000 68% 74%,transparent 80%)}
+.wrap{max-width:1120px;margin:0 auto;padding:calc(18px + env(safe-area-inset-top)) 16px 48px}
+.mono{font-family:var(--mono);letter-spacing:.5px}
+/* כותרת */
+.top{display:flex;align-items:center;gap:16px;padding:14px 18px;background:rgba(255,255,255,.72);
+backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:var(--sh);
+clip-path:polygon(0 0,100% 0,100% 100%,var(--cut) 100%,0 calc(100% - var(--cut)))}
+.top img{height:64px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.18))}
+.top h1{margin:0;font-family:var(--head);font-weight:700;font-size:54px;line-height:1;letter-spacing:.5px}
+.top h1 .unit{display:block;font-size:26px;color:var(--dim);font-weight:400;margin-top:4px;letter-spacing:1px}
+.top p{margin:6px 0 0;color:var(--dim);font-size:14px}
+.upd{margin-inline-start:auto;text-align:left;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.upd .dtg{font-family:var(--head);font-weight:700;font-size:28px;line-height:1.1;color:var(--steel);letter-spacing:.3px}.upd .dtg b{color:var(--hot);margin:0 6px;font-weight:700}
+.upd .clr{white-space:nowrap;font-size:11px;letter-spacing:2px;color:#fff;background:var(--steel);padding:2px 8px}
+.upd small{color:var(--faint);font-size:12px}
+/* פעולות */
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.btn{flex:1 1 220px;display:flex;flex-direction:column;align-items:center;padding:12px 14px;text-decoration:none;
+background:var(--steel);color:#fff;box-shadow:var(--sh);clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px)}
+.btn span{font-family:var(--head);font-size:32px;line-height:1.1;font-weight:700;letter-spacing:.5px}
+.btn small{font-size:12px;opacity:.75}
+.btn.alt{background:var(--paper);color:var(--ink)}
+.run{flex:1 1 100%;padding:12px;border:0;cursor:pointer;color:#fff;font-family:var(--head);font-size:30px;font-weight:700;letter-spacing:.5px;
+background:repeating-linear-gradient(-45deg,rgba(255,255,255,.07) 0 2px,transparent 2px 10px),linear-gradient(180deg,#B5162F,#8E0F24);
+box-shadow:var(--sh);clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px)}
+.run:disabled{opacity:.55;cursor:wait}
+.runstate{flex:1 1 100%;text-align:center;color:var(--dim);font-size:14px}
+/* עיקר */
+.main{position:relative;display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;padding:14px 16px;color:#fff;
+background:repeating-linear-gradient(-45deg,rgba(255,255,255,.04) 0 2px,transparent 2px 12px),linear-gradient(135deg,#1C2A3D,#0E1621);
+box-shadow:var(--sh);clip-path:polygon(0 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%)}
+.main .tag{flex:none;font-family:var(--head);font-size:32px;font-weight:700;line-height:1;padding:6px 10px 4px;background:var(--hot)}
+.main p{margin:0;font-weight:500;font-size:16px;line-height:1.65}
+/* כרטיסי זירה */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;align-items:start}
+.card{position:relative;background:var(--paper);box-shadow:var(--sh);padding:0 0 10px;
+clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,0 100%);animation:in .5s ease both;animation-delay:calc(var(--i) * 70ms)}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:var(--c)}
+.card{--c:var(--cool)}.card.hot{--c:var(--hot)}.card.warm{--c:var(--warm)}
+.card header{display:flex;align-items:center;gap:12px;padding:16px 14px 12px;
+background:linear-gradient(135deg,#F7F8FA 0 55%,#EEF1F4 55% 70%,#F7F8FA 70%);border-bottom:1px solid var(--edge)}
+.emb{width:56px;height:56px;flex:none;filter:drop-shadow(0 3px 5px rgba(0,0,0,.25))}
+.emb.gl{border-radius:50%;background:#0E1621;display:flex;align-items:center;justify-content:center}
+.glb{width:38px;height:38px;fill:none;stroke:#fff;stroke-width:2}
+.ttl{min-width:0}
+.kick{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:1.8px;color:var(--faint);direction:ltr;text-align:right}
+.card h2{margin:0;font-family:var(--head);font-weight:700;font-size:40px;line-height:1.05;letter-spacing:.3px}
+.cmd{margin:2px 0 0;font-size:12.5px;color:var(--dim)}
+.hside{margin-inline-start:auto;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.chip{font-size:13px;font-weight:600;color:#fff;background:var(--c);padding:2px 12px;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+.hflags{display:flex;gap:4px}.hflag{width:30px;height:22px;object-fit:cover;box-shadow:0 0 0 1px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.15)}
+.card ul{margin:0;padding:6px 14px 0 14px;list-style:none;color:var(--dim);font-size:15px}
+.card li{position:relative;margin:6px 0;padding-inline-start:16px}
+.card li::before{content:"";position:absolute;inset-inline-start:0;top:.62em;width:7px;height:7px;background:var(--c);transform:rotate(45deg)}
+.card li b{color:var(--ink)}
+.card li.sub{display:flex;align-items:center;gap:8px;margin:14px 0 4px;padding:0 0 4px;border-bottom:1px solid var(--edge);
+font-family:var(--head);font-weight:700;font-size:28px;color:var(--ink);line-height:1.1}
+.card li.sub::before{display:none}.card li.sub:first-child{margin-top:6px}
+.flag{width:26px;height:19px;object-fit:cover;box-shadow:0 0 0 1px rgba(0,0,0,.12)}.nofl{width:8px;height:8px;background:var(--steel);transform:rotate(45deg)}
+.sig{margin:10px 14px 0;padding:8px 12px;background:#F1F4F8;border-inline-start:3px solid var(--steel);color:var(--ink);font-size:14.5px;line-height:1.55}
+.sig b{font-family:var(--head);font-size:24px;margin-inline-end:8px;color:var(--steel)}
+/* ארכיון */
+h3{margin:30px 0 10px;font-family:var(--head);font-size:36px;font-weight:700;display:flex;align-items:center;gap:10px}
+h3::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--faint))}
+.arch{list-style:none;padding:0;margin:0;background:rgba(255,255,255,.8);box-shadow:var(--sh)}
+.arch li{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-top:1px solid var(--edge)}
+.arch li:first-child{border-top:0}.arch .lk{display:flex;gap:6px}
+.arch a{color:var(--steel);text-decoration:none;font-size:13px;font-weight:600;padding:2px 10px;border:1px solid var(--edge);background:#fff}
+footer{margin-top:28px;color:var(--faint);font-size:12px;text-align:center;letter-spacing:.5px}
+/* שכבות */
+.busy{position:fixed;inset:0;background:rgba(237,239,242,.94);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:8;padding:24px}.busy[hidden]{display:none}
+.busycard{text-align:center;max-width:340px}.busycard b{display:block;font-family:var(--head);font-size:40px;margin:14px 0 6px}#busystage{font-size:17px}.busycard small{display:block;color:var(--faint);margin-top:4px}.busycard p{color:var(--dim);font-size:14px;margin-top:16px}
+.spin{width:46px;height:46px;margin:0 auto;border:5px solid var(--edge);border-top-color:var(--hot);border-radius:50%;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+body.isbusy .dl a,body.isbusy .dl button,body.isbusy .arch a{pointer-events:none;opacity:.4}
+.pinbox{position:fixed;inset:0;background:rgba(14,22,33,.55);display:flex;align-items:center;justify-content:center;z-index:9;padding:20px}.pinbox[hidden]{display:none}
+.pinform{background:#fff;padding:20px;width:100%;max-width:340px;text-align:center;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%)}
+.pinform b{font-family:var(--head);font-size:38px}.pinform p{color:var(--dim);font-size:14px;margin:6px 0 14px}
+.pinform input{width:100%;font-family:var(--mono);font-size:28px;letter-spacing:8px;text-align:center;padding:10px;border:1.5px solid var(--edge);direction:ltr}
+.pinerr{min-height:22px;color:var(--hot);font-size:14px;margin:6px 0}.pinbtns{display:flex;flex-direction:column;gap:8px}.pincancel{background:none;border:0;color:var(--dim);font:inherit;padding:8px;cursor:pointer}
+/* ─── מצב תצוגה (6.10) — במה 1920×1080, מחשב בלבד ─── */
+.fsbtn{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;margin-top:2px;padding:0;border:0;cursor:pointer;color:#fff;background:var(--steel);
+box-shadow:var(--sh);clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);transition:background .15s,transform .15s}
+.fsbtn:hover{background:var(--hot);transform:scale(1.06)}.fsbtn svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.8;stroke-linecap:square}
+@media (max-width:1023px),(hover:none){.fsbtn{display:none}}
+body.staged{overflow:hidden}body.staged .busy{display:none}body.staged>.wrap{visibility:hidden}
+.stage{position:fixed;inset:0;z-index:7;overflow:hidden;background:radial-gradient(120% 90% at 50% 0%,#F4F6F9,#D9DEE6 70%,#CBD2DC)}
+.stage[hidden]{display:none}
+.sv{position:absolute;top:50%;left:50%;width:1920px;height:1080px;padding:26px 28px 28px;display:flex;flex-direction:column;gap:20px;
+transform:translate(-50%,-50%) scale(var(--k,1));transform-origin:50% 50%}
+/* שורה עליונה — כל התיבות באותו גובה */
+.sbar{flex:none;height:150px;display:flex;gap:20px;align-items:stretch}
+.slogo,.sbtn{background:rgba(255,255,255,.92);box-shadow:var(--sh)}
+.slogo{flex:none;width:610px;display:flex;align-items:center;gap:22px;padding:0 26px;clip-path:polygon(0 0,100% 0,100% 100%,22px 100%,0 calc(100% - 22px))}
+.slogo img{height:116px;flex:none;filter:drop-shadow(0 4px 8px rgba(0,0,0,.2))}
+.slogo div{min-width:0}
+.slogo b{display:block;white-space:nowrap;font-family:var(--head);font-size:84px;font-weight:700;line-height:.9;letter-spacing:.5px}
+.slogo span{display:block;white-space:nowrap;font-family:var(--head);font-size:40px;color:var(--dim);letter-spacing:1px;margin-top:4px}
+.stitle{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:10px 28px;color:#fff;box-shadow:var(--sh);
+background:repeating-linear-gradient(-45deg,rgba(255,255,255,.04) 0 2px,transparent 2px 12px),linear-gradient(135deg,#1C2A3D,#0E1621)}
+.st1{display:flex;align-items:baseline;gap:22px}
+.stitle h1{margin:0;min-width:0;font-family:var(--head);font-size:54px;font-weight:700;line-height:1;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sdtg{margin-inline-start:auto;flex:none;font-family:var(--head);font-size:44px;font-weight:700;line-height:1;color:#DCE3EC}.sdtg b{color:#FF5A6E;margin:0 8px}
+/* העיקר: שורה אחת בגודל הדיווחים (JS מעתיק את --fs מהזירות); ארוך מדי — טיקר רציף (6.10) */
+.smain{margin:0;display:flex;align-items:center;gap:14px;min-width:0;color:#F2F5F9}
+.stag{flex:none;font-family:var(--head);font-size:34px;line-height:1;font-weight:700;background:var(--hot);color:#fff;padding:4px 12px 2px;border-radius:6px}
+.svp{flex:1;min-width:0;overflow:hidden;white-space:nowrap;font-family:"Rubik","IBM Plex Sans Hebrew",sans-serif;font-size:var(--fs,26px);font-weight:500;line-height:1.35}
+.svp.tick{-webkit-mask:linear-gradient(90deg,transparent,#000 50px,#000 calc(100% - 50px),transparent);mask:linear-gradient(90deg,transparent,#000 50px,#000 calc(100% - 50px),transparent)}
+.strk{display:inline-flex;gap:0;will-change:transform}.strk>span{flex:none}.strk .sgapm{display:inline-block;width:3em;text-align:center;color:#FF5A6E}
+.svp.tick .strk{padding-inline-start:60px;animation:tick var(--tdur,30s) linear infinite}
+@keyframes tick{from{transform:none}to{transform:translateX(var(--tx,0))}}
+
+/* שקף ומסמך — קטנים, אחד מעל השני */
+.sbtns{flex:none;width:168px;display:flex;flex-direction:column;gap:12px}
+.sbtn{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;color:var(--ink);
+clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);transition:background .15s,color .15s}
+.sbtn span{font-family:var(--head);font-size:40px;font-weight:700;line-height:1}.sbtn small{font-size:13px;color:var(--dim);direction:ltr}
+a.sbtn:hover{background:var(--steel);color:#fff}a.sbtn:hover small{color:#C9D2DE}.sbtn.off{opacity:.45}
+.sx{flex:none;width:120px;border:0;cursor:pointer;color:#fff;background:var(--steel);box-shadow:var(--sh);
+display:flex;align-items:center;justify-content:center;clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);transition:background .15s}
+.sx:hover{background:var(--hot)}.sx svg{width:62px;height:62px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:square}
+/* זירות — הצבע של הזירה על כל הטקסט שלה, והכותרת בגוון בהיר שלו */
+.sgrid{flex:1;min-height:0;display:grid;gap:20px;grid-template-columns:27fr 36.5fr 36.5fr;grid-template-rows:1fr 1fr;
+grid-template-areas:"iran central north" "iran south intl"}
+.a-iran{grid-area:iran;--c:#9E1B32;--c2:#6E0F22;--rgb:158,27,50}
+.a-central{grid-area:central;--c:#1F5FA8;--c2:#123F75;--rgb:31,95,168}
+.a-south{grid-area:south;--c:#B86400;--c2:#834500;--rgb:184,100,0}
+.a-north{grid-area:north;--c:#17794A;--c2:#0D5232;--rgb:23,121,74}
+.a-intl{grid-area:intl;--c:#5B3FA3;--c2:#3C2873;--rgb:91,63,163}
+/* זכוכית שקופה (אדן, 6.10): כתמי אור בצבעי הזירות מאחורי הכרטיסים, והכרטיסים
+   זכוכית חלבית — כותרת צבעונית שקופה, גוף לבן שקוף, מסגרת והברקה דקות */
+.sv::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+background:radial-gradient(520px 420px at 86% 58%,rgba(158,27,50,.55),transparent 70%),
+radial-gradient(560px 360px at 54% 36%,rgba(31,95,168,.50),transparent 70%),
+radial-gradient(560px 360px at 54% 80%,rgba(214,120,0,.50),transparent 70%),
+radial-gradient(560px 360px at 18% 36%,rgba(23,121,74,.50),transparent 70%),
+radial-gradient(560px 360px at 18% 80%,rgba(91,63,163,.50),transparent 70%),
+radial-gradient(900px 260px at 50% 6%,rgba(28,42,61,.35),transparent 70%)}
+.scard{position:relative;min-height:0;display:flex;flex-direction:column;border-radius:22px;overflow:hidden;
+background:linear-gradient(160deg,rgba(255,255,255,.80),rgba(255,255,255,.62));
+-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);
+border:1px solid rgba(255,255,255,.75);
+box-shadow:0 1px 0 rgba(255,255,255,.95) inset,0 0 0 1px rgba(var(--rgb),.12),0 24px 48px -22px rgba(var(--rgb),.55),0 6px 16px -8px rgba(15,25,40,.25)}
+.scard::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+background:linear-gradient(125deg,rgba(255,255,255,.35),transparent 28%,transparent 72%,rgba(255,255,255,.12))}
+.scard header{position:relative;flex:none;display:flex;align-items:center;gap:16px;padding:12px 20px;color:#fff;
+background:linear-gradient(135deg,rgba(var(--rgb),.90),color-mix(in srgb,var(--c2) 88%,transparent));
+border-bottom:1px solid rgba(255,255,255,.35);box-shadow:0 1px 0 rgba(255,255,255,.35) inset}
+.scard header::before{content:"";position:absolute;inset:0 0 50% 0;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,0))}
+.semb{position:relative;width:74px;height:74px;flex:none;filter:drop-shadow(0 3px 6px rgba(0,0,0,.35))}
+.semb.gl{border-radius:50%;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center}.semb .glb{width:50px;height:50px}
+.sttl{position:relative;min-width:0;overflow:hidden}.sttl small{display:block;white-space:nowrap;font-family:var(--mono);font-size:15px;letter-spacing:2.5px;opacity:.8;direction:ltr;text-align:right}
+.scard h2{margin:0;white-space:nowrap;font-family:var(--head);font-size:64px;font-weight:700;line-height:1;letter-spacing:.5px;text-shadow:0 2px 8px rgba(0,0,0,.25)}
+.shside{position:relative;margin-inline-start:auto;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.schip{font-size:20px;font-weight:700;color:var(--ink);background:rgba(255,255,255,.88);padding:3px 16px 3px 14px;display:flex;align-items:center;gap:8px;border-radius:99px;
+box-shadow:0 1px 0 #fff inset,0 2px 6px rgba(0,0,0,.2)}
+.schip::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--cool)}.schip.hot::before{background:var(--hot)}.schip.warm::before{background:var(--warm)}
+.scard .hflag{width:42px;height:30px;border-radius:3px}
+.sbody{flex:1;min-height:0;overflow:hidden;position:relative;padding:12px 22px 14px}
+/* גופן הדיווחים בתצוגה: Rubik — רחב, גובה x גדול, קריא מרחוק (אדן, 6.10) */
+.sflow{--fs:26px;display:flow-root;font-family:"Rubik","IBM Plex Sans Hebrew",sans-serif;font-size:var(--fs);line-height:1.36;color:#141E2B;will-change:transform}
+.sflow ul{margin:0;padding:0;list-style:none}
+.sflow li{position:relative;margin:.42em 0;padding-inline-start:1.05em;font-weight:500}
+.sflow li::before{content:"";position:absolute;inset-inline-start:.1em;top:.52em;width:.36em;height:.36em;background:var(--c);transform:rotate(45deg)}
+.sflow li b{color:var(--ink);font-weight:700}
+.sflow li.sub{display:flex;align-items:center;gap:12px;margin:.7em 0 .2em;padding:0 0 .12em;border-bottom:2px solid rgba(var(--rgb),.28);
+font-family:var(--head);font-weight:700;font-size:1.55em;line-height:1.05;color:var(--c2)}
+.sflow li.sub::before{display:none}.sflow li.sub:first-child{margin-top:.35em}.sflow .flag{width:1.05em;height:.76em;border-radius:2px}
+.ssig{margin:.7em 0 0;padding:.45em .7em;background:rgba(var(--rgb),.09);border:1px solid rgba(var(--rgb),.18);border-inline-start:5px solid var(--c);border-radius:10px;font-size:.86em;line-height:1.4;color:var(--ink)}
+.ssig b{font-family:var(--head);font-size:1.45em;margin-inline-end:10px;color:var(--c2)}
+.squiet{margin:1em 0;font-size:28px;color:var(--faint)}
+.sbody.scroll{-webkit-mask:linear-gradient(180deg,#000 calc(100% - 40px),transparent);mask:linear-gradient(180deg,#000 calc(100% - 40px),transparent)}
+.sbody.scroll .sflow{animation:scr var(--dur,30s) linear infinite}.sbody.scroll:hover .sflow{animation-play-state:paused}
+.sloop{padding-top:1.6em;border-top:0}.sloop::before{content:"";display:block;height:2px;margin:-.8em 0 .8em;background:rgba(var(--rgb),.25)}
+/* שורה עליונה באותה זכוכית */
+.slogo,.sbtn{clip-path:none;border-radius:20px;background:linear-gradient(160deg,rgba(255,255,255,.82),rgba(255,255,255,.6));
+-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);border:1px solid rgba(255,255,255,.8);
+box-shadow:0 1px 0 #fff inset,0 18px 36px -20px rgba(15,25,40,.45)}
+.sbtn{border-radius:14px}a.sbtn:hover{background:rgba(28,42,61,.9)}
+.stitle,.sx{clip-path:none;border-radius:20px;border:1px solid rgba(255,255,255,.18);
+background:linear-gradient(140deg,rgba(28,42,61,.88),rgba(10,16,26,.82));-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);
+box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 18px 36px -18px rgba(10,16,26,.6)}
+.sx:hover{background:linear-gradient(140deg,rgba(200,16,46,.92),rgba(142,15,36,.88))}
+
+@keyframes scr{from{transform:none}to{transform:translateY(var(--d,0))}}
+@media (prefers-reduced-motion:reduce){.sbody.scroll{overflow:auto}.sbody.scroll .sflow{animation:none}.sloop{display:none}}
+@media (prefers-reduced-motion:reduce){.card{animation:none}}
+@media (max-width:640px){
+.wrap{padding-left:12px;padding-right:12px}
+.top{flex-wrap:wrap;gap:10px 12px;padding:12px}
+.top img{height:58px}.top h1{font-size:50px}.top h1 .unit{font-size:24px}.upd small{display:none}
+.upd{margin-inline-start:0;flex:1 1 100%;flex-direction:row;align-items:center;justify-content:space-between;border-top:1px solid var(--edge);padding-top:8px}
+.upd .dtg{font-size:26px}
+.btn{flex:1 1 40%;padding:10px 6px}.btn span{font-size:29px}
+.main{flex-direction:column;gap:8px}.main p{font-size:15.5px}
+.grid{gap:12px;grid-template-columns:1fr}.card h2{font-size:38px}.card ul{font-size:15.5px}
+}
+</style></head><body data-stamp="2026-10-11-0845" data-build="1791697539"><div class="wrap">
+<div class="top"><img src="logo.png?v=1791697539" alt=""><div><h1>סוכן אוסינט<span class="unit">ענף מבצעים חמ״ץ</span></h1>
+</div><div class="upd"><span class="clr">בלמ״ס · מקורות גלויים</span><span class="dtg">11 באוקטובר 2026<b>|</b><bdi>08:45</bdi></span>
+<button class="fsbtn" id="stagebtn" type="button" title="מצב תצוגה — מסך מלא (F)" aria-label="מצב תצוגה"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9V3h6M15 3h6v6M21 15v6h-6M9 21H3v-6"/></svg></button></div></div>
+<div class="dl"><a class="btn" href="latest.pptx?v=2026-10-11-0845" download="OSINT-Slide-2026-10-11-0845.pptx"><span>הורדת שקף</span><small>PowerPoint · תמונת מצב</small></a><a class="btn alt" href="latest.docx?v=2026-10-11-0845" download="OSINT-Report-2026-10-11-0845.docx"><span>הורדת מסמך</span><small>דו״ח אג״מי · 24 שעות</small></a>
+<button class="run" id="runnow" type="button">ריצה מזדמנת</button>
+<div class="runstate" id="runstate" hidden></div></div>
+<div class="main"><span class="tag">עיקר</span><p>טיל בליסטי ששיגרו החות׳ים מתימן פגע ב-10.10 אחה״צ בטרמינל הנוסעים בנמל התעופה בריאד, בלי אזעקה. לפחות 12 בני אדם נהרגו, בהם אזרח אמריקני, ועשרות עד מאות נפצעו. הנשיא טראמפ אמר שייתכן שארה״ב תצטרף לתקיפות נגד החות׳ים.</p></div>
+<div class="grid"><section class="card hot" style="--i:0"><header><img class="emb" src="cmd/homefront.png" alt=""><div class="ttl"><small class="kick">IRAN · IRAQ · YEMEN</small><h2>זירת מעג״ש</h2><p class="cmd">פיקוד העורף</p></div><div class="hside"><span class="chip">חם</span><span class="hflags"><img class="hflag" src="flags/ir.svg" alt=""></span></div></header><ul><li class="sub"><img class="flag" src="flags/ye.svg" alt=""><span>תימן</span></li><li><b>10.10 אחה״צ:</b> טיל בליסטי חות׳י פגע בטרמינל הנוסעים בנמל התעופה קינג ח׳אלד בריאד, בלי אזעקה (ynet)</li><li>גורמים רשמיים ל-NYT (23:51): לפחות 12 הרוגים ו-50 פצועים בנמל התעופה בריאד. לפי ynet: 309 פצועים</li><li>מרקו רוביו, בכיר בממשל ארה״ב (03:04, בלילה): אזרח אמריקני נהרג מהטיל החות׳י בנמל התעופה בריאד</li><li>רשות התעופה האזרחית בסעודיה: הפעילות בנמל התעופה בריאד הושהתה עד שתושלם הערכת הנזקים</li><li>הנשיא טראמפ, אחרי הטיל החות׳י בריאד: ייתכן שארה״ב תצטרף לתקיפות נגד החות׳ים בתימן (ynet)</li></ul></section><section class="card warm" style="--i:1"><header><img class="emb" src="cmd/north.png" alt=""><div class="ttl"><small class="kick">LEBANON · SYRIA</small><h2>זירת פצ״ן</h2><p class="cmd">פיקוד צפון</p></div><div class="hside"><span class="chip">מתפתח</span><span class="hflags"><img class="hflag" src="flags/lb.svg" alt=""><img class="hflag" src="flags/sy.svg" alt=""></span></div></header><ul><li class="sub"><img class="flag" src="flags/lb.svg" alt=""><span>לבנון</span></li><li>10.10, 19:57: התרעה על חדירת כלי טיס עוין בערב אל-עראמשה (גליל מערבי, קו העימות). הסתיימה ב-20:06</li><li><b>פיקוד הצפון:</b> עמדות בידוק בצמתים בצפון ותגבור כוחות, אחרי החשד לחדירה בערב אל-עראמשה (גליל מערבי)</li><li><b>דיווח (ynet):</b> נוהל ״אביר לילה ב׳״ (חשד לחדירה) הופעל ביישובים בגליל המערבי. העצם הוא ככל הנראה שקית</li><li class="sub"><img class="flag" src="flags/sy.svg" alt=""><span>סוריה</span></li><li>פיצוץ במחסן בצפון-מערב סוריה: לפחות 4 הרוגים (AP)</li></ul></section><section class="card cool" style="--i:2"><header><img class="emb" src="cmd/central.png" alt=""><div class="ttl"><small class="kick">JUDEA &amp; SAMARIA</small><h2>זירת מרכז</h2><p class="cmd">פיקוד מרכז</p></div><div class="hside"><span class="chip">מעקב</span><span class="hflags"><img class="hflag" src="flags/ps.svg" alt=""></span></div></header><ul><li class="sub"><img class="flag" src="flags/ps.svg" alt=""><span>איו״ש</span></li><li><b>דיווח (ynet):</b> המשטרה בודקת אם ח״כ קרויזר ומנכ״ל עוצמה יהודית היו בתקיפת שוטרים במצפה יריחו (בנימין)</li></ul></section><section class="card warm" style="--i:3"><header><img class="emb" src="cmd/south.png" alt=""><div class="ttl"><small class="kick">GAZA STRIP</small><h2>זירת דרום</h2><p class="cmd">פיקוד דרום</p></div><div class="hside"><span class="chip">מתפתח</span><span class="hflags"><img class="hflag" src="flags/ps.svg" alt=""></span></div></header><ul><li class="sub"><img class="flag" src="flags/ps.svg" alt=""><span>רצ״ע</span></li><li><b>דובר צה״ל:</b> ב-10.10 חוסל בדראג׳ תופאח (צפון הרצועה) מוחמד נחאלה, מפקד במערך הנ״ט של הג׳יהאד האסלאמי</li></ul></section><section class="card cool" style="--i:4"><header><div class="emb gl"><svg viewBox="0 0 48 48" class="glb" aria-hidden="true"><circle cx="24" cy="24" r="21"/><ellipse cx="24" cy="24" rx="9" ry="21"/><path d="M3 24h42M7 13h34M7 35h34"/></svg></div><div class="ttl"><small class="kick">INTERNATIONAL</small><h2>בינ״ל ביטחוני</h2></div><div class="hside"><span class="chip">מעקב</span><span class="hflags"><img class="hflag" src="flags/un.svg" alt=""></span></div></header><ul><li><b>דובר צה״ל:</b> משלחת רשמית של חיל האוויר השתתפה בתערוכה האווירית במרקש (מרוקו), לראשונה מאז הסכמי אברהם</li><li>קרן הינד רג׳אב (פועלת נגד אנשי ביטחון ישראלים) הגישה תלונה בהאג נגד רופאים ישראלים בכירים (ynet)</li></ul></section></div>
+<h3>סקירות קודמות</h3><ul class="arch"><li><span class="mono">11.10 06:45</span><span class="lk"><a href="archive/2026-10-11-0645.pptx">שקף</a><a href="archive/2026-10-11-0645.docx">מסמך</a><a href="archive/2026-10-11-0645.txt">טקסט</a></span></li><li><span class="mono">10.10 19:45</span><span class="lk"><a href="archive/2026-10-10-1945.pptx">שקף</a><a href="archive/2026-10-10-1945.docx">מסמך</a><a href="archive/2026-10-10-1945.txt">טקסט</a></span></li><li><span class="mono">10.10 12:48</span><span class="lk"><a href="archive/2026-10-10-1248.pptx">שקף</a><a href="archive/2026-10-10-1248.docx">מסמך</a><a href="archive/2026-10-10-1248.txt">טקסט</a></span></li><li><span class="mono">10.10 08:45</span><span class="lk"><a href="archive/2026-10-10-0845.pptx">שקף</a><a href="archive/2026-10-10-0845.docx">מסמך</a><a href="archive/2026-10-10-0845.txt">טקסט</a></span></li><li><span class="mono">10.10 06:46</span><span class="lk"><a href="archive/2026-10-10-0646.pptx">שקף</a><a href="archive/2026-10-10-0646.docx">מסמך</a><a href="archive/2026-10-10-0646.txt">טקסט</a></span></li><li><span class="mono">09.10 19:46</span><span class="lk"><a href="archive/2026-10-09-1946.pptx">שקף</a><a href="archive/2026-10-09-1946.docx">מסמך</a><a href="archive/2026-10-09-1946.txt">טקסט</a></span></li><li><span class="mono">09.10 12:48</span><span class="lk"><a href="archive/2026-10-09-1248.pptx">שקף</a><a href="archive/2026-10-09-1248.docx">מסמך</a><a href="archive/2026-10-09-1248.txt">טקסט</a></span></li><li><span class="mono">09.10 08:45</span><span class="lk"><a href="archive/2026-10-09-0845.pptx">שקף</a><a href="archive/2026-10-09-0845.docx">מסמך</a><a href="archive/2026-10-09-0845.txt">טקסט</a></span></li><li><span class="mono">09.10 06:45</span><span class="lk"><a href="archive/2026-10-09-0645.pptx">שקף</a><a href="archive/2026-10-09-0645.docx">מסמך</a><a href="archive/2026-10-09-0645.txt">טקסט</a></span></li><li><span class="mono">08.10 19:47</span><span class="lk"><a href="archive/2026-10-08-1947.pptx">שקף</a><a href="archive/2026-10-08-1947.docx">מסמך</a><a href="archive/2026-10-08-1947.txt">טקסט</a></span></li><li><span class="mono">08.10 12:49</span><span class="lk"><a href="archive/2026-10-08-1249.pptx">שקף</a><a href="archive/2026-10-08-1249.docx">מסמך</a><a href="archive/2026-10-08-1249.txt">טקסט</a></span></li></ul>
+<footer>לא מסווג · מידע ממקורות גלויים · המידע נכון לשעת הסקירה</footer>
+</div><div class="stage" id="stage" hidden><div class="sv" id="sv"><div class="sbar"><div class="slogo"><img src="logo.png" alt=""><div><b>סוכן אוסינט</b><span>ענף מבצעים חמ״ץ</span></div></div><div class="stitle"><div class="st1"><h1>עדכון תמונת מצב · 08:45</h1><span class="sdtg">11 באוקטובר 2026<b>|</b><bdi>08:45</bdi></span></div><div class="smain"><span class="stag">עיקר</span><div class="svp" id="svp"><div class="strk"><span class="sone">טיל בליסטי ששיגרו החות׳ים מתימן פגע ב-10.10 אחה״צ בטרמינל הנוסעים בנמל התעופה בריאד, בלי אזעקה. לפחות 12 בני אדם נהרגו, בהם אזרח אמריקני, ועשרות עד מאות נפצעו. הנשיא טראמפ אמר שייתכן שארה״ב תצטרף לתקיפות נגד החות׳ים.</span></div></div></div></div><div class="sbtns"><a class="sbtn" href="latest.pptx?v=2026-10-11-0845" download="OSINT-Slide-2026-10-11-0845.pptx"><span>שקף</span><small>PPTX</small></a><a class="sbtn" href="latest.docx?v=2026-10-11-0845" download="OSINT-Report-2026-10-11-0845.docx"><span>מסמך</span><small>DOCX</small></a></div><button class="sx" id="stagex" type="button" title="חזרה לתצוגה רגילה (Esc)" aria-label="יציאה ממצב תצוגה"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9V3h6M15 3h6v6M21 15v6h-6M9 21H3v-6"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg></button></div><div class="sgrid"><section class="scard a-iran"><header><img class="semb" src="cmd/homefront.png" alt=""><div class="sttl"><small>IRAN · IRAQ · YEMEN</small><h2>זירת מעג״ש</h2></div><div class="shside"><span class="schip hot">חם</span><span class="hflags"><img class="hflag" src="flags/ir.svg" alt=""></span></div></header><div class="sbody"><div class="sflow"><ul><li class="sub"><img class="flag" src="flags/ye.svg" alt=""><span>תימן</span></li><li><b>10.10 אחה״צ:</b> טיל בליסטי חות׳י פגע בטרמינל הנוסעים בנמל התעופה קינג ח׳אלד בריאד, בלי אזעקה (ynet)</li><li>גורמים רשמיים ל-NYT (23:51): לפחות 12 הרוגים ו-50 פצועים בנמל התעופה בריאד. לפי ynet: 309 פצועים</li><li>מרקו רוביו, בכיר בממשל ארה״ב (03:04, בלילה): אזרח אמריקני נהרג מהטיל החות׳י בנמל התעופה בריאד</li><li>רשות התעופה האזרחית בסעודיה: הפעילות בנמל התעופה בריאד הושהתה עד שתושלם הערכת הנזקים</li><li>הנשיא טראמפ, אחרי הטיל החות׳י בריאד: ייתכן שארה״ב תצטרף לתקיפות נגד החות׳ים בתימן (ynet)</li></ul></div></div></section><section class="scard a-central"><header><img class="semb" src="cmd/central.png" alt=""><div class="sttl"><small>JUDEA &amp; SAMARIA</small><h2>זירת מרכז</h2></div><div class="shside"><span class="schip cool">מעקב</span><span class="hflags"><img class="hflag" src="flags/ps.svg" alt=""></span></div></header><div class="sbody"><div class="sflow"><ul><li class="sub"><img class="flag" src="flags/ps.svg" alt=""><span>איו״ש</span></li><li><b>דיווח (ynet):</b> המשטרה בודקת אם ח״כ קרויזר ומנכ״ל עוצמה יהודית היו בתקיפת שוטרים במצפה יריחו (בנימין)</li></ul></div></div></section><section class="scard a-south"><header><img class="semb" src="cmd/south.png" alt=""><div class="sttl"><small>GAZA STRIP</small><h2>זירת דרום</h2></div><div class="shside"><span class="schip warm">מתפתח</span><span class="hflags"><img class="hflag" src="flags/ps.svg" alt=""></span></div></header><div class="sbody"><div class="sflow"><ul><li class="sub"><img class="flag" src="flags/ps.svg" alt=""><span>רצ״ע</span></li><li><b>דובר צה״ל:</b> ב-10.10 חוסל בדראג׳ תופאח (צפון הרצועה) מוחמד נחאלה, מפקד במערך הנ״ט של הג׳יהאד האסלאמי</li></ul></div></div></section><section class="scard a-north"><header><img class="semb" src="cmd/north.png" alt=""><div class="sttl"><small>LEBANON · SYRIA</small><h2>זירת פצ״ן</h2></div><div class="shside"><span class="schip warm">מתפתח</span><span class="hflags"><img class="hflag" src="flags/lb.svg" alt=""><img class="hflag" src="flags/sy.svg" alt=""></span></div></header><div class="sbody"><div class="sflow"><ul><li class="sub"><img class="flag" src="flags/lb.svg" alt=""><span>לבנון</span></li><li>10.10, 19:57: התרעה על חדירת כלי טיס עוין בערב אל-עראמשה (גליל מערבי, קו העימות). הסתיימה ב-20:06</li><li><b>פיקוד הצפון:</b> עמדות בידוק בצמתים בצפון ותגבור כוחות, אחרי החשד לחדירה בערב אל-עראמשה (גליל מערבי)</li><li><b>דיווח (ynet):</b> נוהל ״אביר לילה ב׳״ (חשד לחדירה) הופעל ביישובים בגליל המערבי. העצם הוא ככל הנראה שקית</li><li class="sub"><img class="flag" src="flags/sy.svg" alt=""><span>סוריה</span></li><li>פיצוץ במחסן בצפון-מערב סוריה: לפחות 4 הרוגים (AP)</li></ul></div></div></section><section class="scard a-intl"><header><div class="semb gl"><svg viewBox="0 0 48 48" class="glb" aria-hidden="true"><circle cx="24" cy="24" r="21"/><ellipse cx="24" cy="24" rx="9" ry="21"/><path d="M3 24h42M7 13h34M7 35h34"/></svg></div><div class="sttl"><small>INTERNATIONAL</small><h2>בינ״ל ביטחוני</h2></div><div class="shside"><span class="schip cool">מעקב</span><span class="hflags"><img class="hflag" src="flags/un.svg" alt=""></span></div></header><div class="sbody"><div class="sflow"><ul><li><b>דובר צה״ל:</b> משלחת רשמית של חיל האוויר השתתפה בתערוכה האווירית במרקש (מרוקו), לראשונה מאז הסכמי אברהם</li><li>קרן הינד רג׳אב (פועלת נגד אנשי ביטחון ישראלים) הגישה תלונה בהאג נגד רופאים ישראלים בכירים (ynet)</li></ul></div></div></section></div></div></div><div class="busy" id="busy" hidden><div class="busycard"><div class="spin"></div><b>סקירה בהכנה</b><div id="busystage"></div><small id="busytime"></small><p>ההורדות והריצה המזדמנת חסומות עד שהסקירה תעלה. הדף יתעדכן לבד.</p></div></div>
+<div class="pinbox" id="pinbox" hidden><form class="pinform" id="pinform">
+<b>ריצה מזדמנת</b><p>הסקירה תישלח לערוץ הטלגרם, ושקף ומסמך חדשים יעלו לאתר.</p>
+<input id="pin" type="password" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="קוד">
+<div class="pinerr" id="pinerr"></div>
+<div class="pinbtns"><button type="submit" class="run">הרץ</button>
+<button type="button" class="pincancel" id="pincancel">ביטול</button></div></form></div>
+<script>
+// טריות + מסך טעינה (אדן, 29.9).
+// 1. באייפון, אפליקציה ממסך הבית מחזיקה את index.html במטמון ורענון לא עוזר.
+//    בכל פתיחה ובכל חזרה לאפליקציה בודקים archive.json בלי מטמון, ואם יש
+//    סקירה חדשה יותר — טוענים מחדש עם ?v=<חותמת>, כתובת שהמטמון לא מכיר.
+//    חזרה אחרי יותר מ-5 דקות ברקע = טעינה מלאה בכל מקרה.
+// 2. status.json נכתב על ידי הריצה עצמה. כש-state=running — מסך טעינה לכל
+//    מי שבאתר, שחוסם ריצה נוספת והורדות. running בן יותר מ-50 דק׳ = ריצה
+//    שמתה באמצע, ולא נועל את האתר.
+(function(){
+var myBuild=document.body.dataset.build, hiddenAt=0, busyLocal=null, timer=null;
+var ov=document.getElementById("busy"), ovStage=document.getElementById("busystage"),
+    ovTime=document.getElementById("busytime");
+function go(v){location.replace(location.pathname+"?v="+encodeURIComponent(v));}
+// 7.10 (אדן: ״שהאתרים יתעדכנו בלי ריפרש, מיד כשיש סקירה״): גרסה חדשה נטענת
+// **בתוך הדף** — מחליפים את התוכן (כותרת, עיקר, זירות, הורדות, ארכיון ובמת
+// התצוגה) בלי טעינה מחדש, כך שמסך מלא ומצב תצוגה נשארים. נכשל → טעינה מלאה.
+var swapping=false;
+function swapNode(sel,doc){
+  var a=document.querySelector(sel),b=doc.querySelector(sel);
+  if(a&&b){a.innerHTML=b.innerHTML;return true;}
+  return false;
+}
+async function swapTo(build){
+  if(swapping) return true;swapping=true;
+  try{
+    var html=await (await fetch("index.html?v="+encodeURIComponent(build)+"&t="+Date.now(),{cache:"no-store"})).text();
+    var doc=new DOMParser().parseFromString(html,"text/html");
+    var nb=doc.body.dataset.build;if(!nb||nb===myBuild){swapping=false;return false;}
+    [".top .upd .dtg",".grid",".arch","#sv"].forEach(function(sel){swapNode(sel,doc);});
+    var om=document.querySelector(".wrap>.main"),nm=doc.querySelector(".wrap>.main"),grid=document.querySelector(".wrap>.grid");
+    if(om&&nm) om.innerHTML=nm.innerHTML; else if(!om&&nm) grid.parentNode.insertBefore(nm,grid); else if(om&&!nm) om.remove();
+    var dl=document.querySelector(".dl"),run=document.getElementById("runnow");
+    dl.querySelectorAll("a.btn").forEach(function(x){x.remove();});
+    doc.querySelectorAll(".dl a.btn").forEach(function(x){dl.insertBefore(document.importNode(x,true),run);});
+    myBuild=nb;document.body.dataset.build=nb;document.body.dataset.stamp=doc.body.dataset.stamp;
+    try{history.replaceState(null,"",location.pathname+"?v="+encodeURIComponent(nb));}catch(e){}
+    if(window.osintStage) window.osintStage.refresh();
+    swapping=false;return true;
+  }catch(e){swapping=false;go(build);return true;}
+}
+async function fresh(){
+  try{var v=await (await fetch("version.json?t="+Date.now(),{cache:"no-store"})).json();
+    if(v&&v.build&&v.build!==myBuild){return await swapTo(v.build);}
+  }catch(e){}
+  return false;
+}
+function show(stage,since){
+  ov.hidden=false;document.body.classList.add("isbusy");
+  ovStage.textContent=stage||"הסקירה בהכנה";
+  var m=since?Math.max(0,Math.round((Date.now()/1000-since)/60)):0;
+  ovTime.textContent=since?("התחילה לפני "+m+" דק׳ · בדרך כלל 5–15"):"";
+}
+function hide(){ov.hidden=true;document.body.classList.remove("isbusy");}
+window.osintBusy=function(stage){busyLocal=stage;if(stage) show(stage,0); else hide(); poll();};
+async function poll(){
+  clearTimeout(timer);
+  var st=null;
+  try{st=await (await fetch("status.json?t="+Date.now(),{cache:"no-store"})).json();}catch(e){}
+  var running=st&&st.state==="running"&&(Date.now()/1000-st.since)<50*60;
+  if(running){show(st.stage,st.since);}
+  else if(busyLocal){show(busyLocal,0);}
+  else{hide();await fresh();}
+  timer=setTimeout(poll,(running||busyLocal)?8000:15000);
+}
+fresh().then(function(moved){if(!moved) poll();});
+document.addEventListener("visibilitychange",function(){
+  if(document.hidden){hiddenAt=Date.now();return;}
+  fresh().then(function(m){if(!m) poll();});
+});
+window.addEventListener("pageshow",function(e){if(e.persisted) fresh().then(function(m){if(!m) poll();});});
+})();
+(function(){
+var API="https://api.github.com/repos/luckydan1mc-arch/osint-brief/actions", LOCK={"s": "ShexF/bnGZSq2K4CcHz5Tg==", "n": "7m8Rt/JT/WvNYzf+6zS9sw==", "c": "Cj7WOf/qtc72qDHt2Xv+lM0eB0yh7QNye6Ntrgxco3T/vTGaVueR92+rKZpxcYLrQibxBCOo7RJu+sPW3YRhbN99/8T3GyuEFbbq/h+ap5qgglALTaClyD6rNUOC", "t": "XQFi/lEZgbiGfDXht7ovbJOO8QnYQiwnzv+RZwosCpo=", "i": 600000};
+var STAMP=document.body.dataset.stamp;
+var btn=document.getElementById("runnow"), st=document.getElementById("runstate");
+var box=document.getElementById("pinbox"), pin=document.getElementById("pin"), err=document.getElementById("pinerr");
+if(!LOCK){btn.hidden=true;return;}
+function say(t){st.textContent=t;st.hidden=!t;}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
+function ub(s){return Uint8Array.from(atob(s),function(c){return c.charCodeAt(0);});}
+function cat(a,b){var o=new Uint8Array(a.length+b.length);o.set(a);o.set(b,a.length);return o;}
+async function hm(key,msg){var k=await crypto.subtle.importKey("raw",key,{name:"HMAC",hash:"SHA-256"},false,["sign"]);
+  return new Uint8Array(await crypto.subtle.sign("HMAC",k,msg));}
+async function unlock(code){
+  var base=await crypto.subtle.importKey("raw",new TextEncoder().encode(code),"PBKDF2",false,["deriveBits"]);
+  var km=new Uint8Array(await crypto.subtle.deriveBits({name:"PBKDF2",hash:"SHA-256",salt:ub(LOCK.s),iterations:LOCK.i},base,512));
+  var ke=km.slice(0,32),kmac=km.slice(32),n=ub(LOCK.n),c=ub(LOCK.c),t=ub(LOCK.t);
+  var tag=await hm(kmac,cat(n,c)),ok=tag.length===t.length;
+  for(var i=0;i<t.length;i++) ok=ok&&tag[i]===t[i];
+  if(!ok) return null;
+  var out=new Uint8Array(c.length);
+  for(var j=0;j*32<c.length;j++){var ctr=new Uint8Array([j>>>24&255,j>>>16&255,j>>>8&255,j&255]);
+    var ks=await hm(ke,cat(n,ctr));for(var x=0;x<32&&j*32+x<c.length;x++) out[j*32+x]=c[j*32+x]^ks[x];}
+  return new TextDecoder().decode(out);
+}
+function hdr(tok){return {"Accept":"application/vnd.github+json","Authorization":"Bearer "+tok,"X-GitHub-Api-Version":"2022-11-28"};}
+async function latestRun(tok,since){
+  var r=await fetch(API+"/workflows/brief.yml/runs?event=workflow_dispatch&per_page=5",{headers:hdr(tok),cache:"no-store"});
+  if(!r.ok) throw new Error("GitHub "+r.status);
+  var j=await r.json();
+  return (j.workflow_runs||[]).find(function(x){return Date.parse(x.created_at)>=since-60000;});
+}
+async function waitSite(){
+  for(var i=0;i<40;i++){
+    try{var a=await (await fetch("archive.json?t="+Date.now(),{cache:"no-store"})).json();
+      if(a[0]&&a[0].stamp!==STAMP){location.replace(location.pathname+"?v="+encodeURIComponent(a[0].stamp));return;}}catch(e){}
+    say("הסקירה יצאה · האתר מתעדכן…");await sleep(15000);
+  }
+  say("הסקירה יצאה. האתר יתעדכן בדקות הקרובות — רענן.");
+}
+async function go(tok){
+  btn.disabled=true;var since=Date.now();say("");window.osintBusy("שולח בקשה…");
+  try{
+    var r=await fetch(API+"/workflows/brief.yml/dispatches",{method:"POST",
+      headers:Object.assign(hdr(tok),{"Content-Type":"application/json"}),
+      body:JSON.stringify({ref:"main",inputs:{slot:"ondemand"}})});
+    if(r.status!==204) throw new Error("GitHub דחה את הבקשה ("+r.status+") — ייתכן שהטוקן פג");
+    var run=null;
+    for(var i=0;i<120;i++){
+      await sleep(i<3?5000:15000);
+      run=await latestRun(tok,since);
+      if(!run){window.osintBusy("ממתין שהריצה תתחיל…");continue;}
+      if(run.status!=="completed"){window.osintBusy("הריצה פועלת…");continue;}
+      break;
+    }
+    if(!run||run.status!=="completed") throw new Error("הריצה עדיין לא הסתיימה — בדוק שוב מאוחר יותר");
+    if(run.conclusion!=="success") throw new Error("הריצה לא פרסמה ("+run.conclusion+") — אולי אין חדש מאז הסקירה האחרונה.");
+    window.osintBusy("הסקירה יצאה · האתר מתעדכן…");
+    await waitSite();
+  }catch(e){window.osintBusy(null);say("✗ "+e.message);}
+  btn.disabled=false;
+}
+btn.onclick=function(){err.textContent="";pin.value="";box.hidden=false;setTimeout(function(){pin.focus();},50);};
+document.getElementById("pincancel").onclick=function(){box.hidden=true;};
+document.getElementById("pinform").onsubmit=async function(ev){
+  ev.preventDefault();var code=pin.value.trim();if(!code) return;
+  err.textContent="בודק…";
+  var tok=null;try{tok=await unlock(code);}catch(e){}
+  if(!tok){err.textContent="קוד שגוי";pin.value="";pin.focus();return;}
+  box.hidden=true;go(tok);
+};
+})();
+</script><script>
+(function(){
+var stage=document.getElementById("stage"),sv=document.getElementById("sv"),
+    btn=document.getElementById("stagebtn"),x=document.getElementById("stagex"),KEY="osint-stage",fsOn=false;
+if(!stage||!btn) return;
+function scale(){sv.style.setProperty("--k",Math.min(innerWidth/1920,innerHeight/1080));}
+function fit(){
+  // גודל אחד לכל הזירות (אדן, 6.10: רצ״ע יצא גדול מהשאר) — הקטן מבין מה שכל זירה
+  // צריכה, בטווח 25–34px. זירה שעדיין לא נכנסת בגודל הזה — גוללת בלולאה.
+  var bodies=[].slice.call(stage.querySelectorAll(".sbody")),sizes=[];
+  bodies.forEach(function(b){
+    var f=b.querySelector(".sflow");b.classList.remove("scroll");f.style.removeProperty("--d");
+    if(f.dataset.orig===undefined) f.dataset.orig=f.innerHTML; else f.innerHTML=f.dataset.orig;
+    var cs=getComputedStyle(b),room=b.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+    b._room=room;
+    var lo=25,hi=34,best=lo;
+    f.style.setProperty("--fs",hi+"px");
+    if(f.offsetHeight<=room){sizes.push(hi);return;}
+    while(lo<=hi){var m=(lo+hi)>>1;f.style.setProperty("--fs",m+"px");
+      if(f.offsetHeight<=room){best=m;lo=m+1;}else hi=m-1;}
+    sizes.push(best);
+  });
+  var fs=sizes.length?Math.min.apply(null,sizes):26;
+  bodies.forEach(function(b){
+    var f=b.querySelector(".sflow");f.style.setProperty("--fs",fs+"px");
+    // לא נכנס: גלילה רציפה למטה בלולאה (אדן, 6.10: ״לא לחזור למעלה — להתחיל מההתחלה״).
+    // עותק שני של התוכן מתחת לראשון; כשהעותק מגיע לראש — האנימציה מתחילה מחדש בלי קפיצה.
+    if(f.offsetHeight>b._room){
+      f.innerHTML=f.dataset.orig+'<div class="sloop" aria-hidden="true">'+f.dataset.orig+'</div>';
+      var period=f.querySelector(".sloop").firstElementChild.offsetTop-f.firstElementChild.offsetTop;
+      b.classList.add("scroll");f.style.setProperty("--d",(-period)+"px");
+      f.style.setProperty("--dur",Math.max(11,period/28.8)+"s");}
+  });
+}
+function ticker(){
+  var vp=document.getElementById("svp");if(!vp) return;
+  var fs=[].map.call(stage.querySelectorAll(".sflow"),function(f){return parseFloat(f.style.getPropertyValue("--fs"))||26;});
+  vp.style.setProperty("--fs",(fs.length?Math.min.apply(null,fs):26)+"px");
+  var trk=vp.querySelector(".strk");
+  if(trk.dataset.orig===undefined) trk.dataset.orig=trk.innerHTML; else trk.innerHTML=trk.dataset.orig;
+  vp.classList.remove("tick");var one=trk.querySelector(".sone");
+  if(one.offsetWidth<=vp.clientWidth) return;
+  // טקסט עברי נע ימינה: המשך המשפט נכנס משמאל ונקרא מימין לשמאל, בלולאה בלי קפיצה
+  trk.innerHTML=trk.dataset.orig+'<span class="sgapm">◆</span>'+trk.dataset.orig.replace('class="sone"','class="sone" aria-hidden="true"');
+  var two=trk.querySelectorAll(".sone")[1],period=Math.abs(two.offsetLeft-trk.querySelector(".sone").offsetLeft);
+  trk.style.setProperty("--tx",period+"px");trk.style.setProperty("--tdur",Math.max(13.2,period/63)+"s");
+  vp.classList.add("tick");
+}
+function store(v){try{v?sessionStorage.setItem(KEY,"1"):sessionStorage.removeItem(KEY);}catch(e){}}
+function enter(full){
+  stage.hidden=false;document.body.classList.add("staged");scale();fit();ticker();store(true);
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){fit();ticker();});
+  var el=document.documentElement;
+  if(full&&el.requestFullscreen&&!document.fullscreenElement){
+    el.requestFullscreen({navigationUI:"hide"}).then(function(){fsOn=true;scale();}).catch(function(){});}
+}
+function exit(){
+  stage.hidden=true;document.body.classList.remove("staged");store(false);
+  if(document.fullscreenElement&&document.exitFullscreen){fsOn=false;document.exitFullscreen().catch(function(){});}
+}
+btn.onclick=function(){stage.hidden?enter(true):exit();};
+x.onclick=exit;
+window.osintStage={refresh:function(){
+  x=document.getElementById("stagex");if(x) x.onclick=exit;
+  if(!stage.hidden){scale();fit();ticker();}
+}};
+addEventListener("resize",function(){if(!stage.hidden) scale();});
+document.addEventListener("fullscreenchange",function(){
+  if(!document.fullscreenElement&&fsOn){fsOn=false;exit();}
+});
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape"&&!stage.hidden){exit();return;}
+  if((e.key==="f"||e.key==="F"||e.key==="כ")&&!e.metaKey&&!e.ctrlKey&&!e.altKey&&!/INPUT|TEXTAREA/.test((e.target||{}).tagName||"")
+     &&matchMedia("(min-width:1024px) and (hover:hover)").matches){e.preventDefault();stage.hidden?enter(true):exit();}
+});
+var keep=false;try{keep=sessionStorage.getItem(KEY)==="1";}catch(e){}
+if(keep&&matchMedia("(min-width:1024px) and (hover:hover)").matches) enter(false);
+})();
+</script></body></html>

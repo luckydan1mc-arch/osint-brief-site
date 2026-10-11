@@ -1,0 +1,114 @@
+[
+ {
+  "docx": "archive/2026-10-11-0845.docx",
+  "pptx": "archive/2026-10-11-0845.pptx",
+  "txt": "archive/2026-10-11-0845.txt",
+  "stamp": "2026-10-11-0845",
+  "label": "11.10 08:45",
+  "kind": "scheduled"
+ },
+ {
+  "docx": "archive/2026-10-11-0645.docx",
+  "pptx": "archive/2026-10-11-0645.pptx",
+  "txt": "archive/2026-10-11-0645.txt",
+  "stamp": "2026-10-11-0645",
+  "label": "11.10 06:45",
+  "kind": "scheduled"
+ },
+ {
+  "docx": "archive/2026-10-11-0025.docx",
+  "pptx": "archive/2026-10-11-0025.pptx",
+  "txt": "archive/2026-10-11-0025.txt",
+  "stamp": "2026-10-11-0025",
+  "label": "11.10 00:25",
+  "kind": "ondemand"
+ },
+ {
+  "docx": "archive/2026-10-10-1945.docx",
+  "pptx": "archive/2026-10-10-1945.pptx",
+  "txt": "archive/2026-10-10-1945.txt",
+  "stamp": "2026-10-10-1945",
+  "label": "10.10 19:45",
+  "kind": "scheduled"
+ },
+ {
+  "docx": "archive/2026-10-10-1248.docx",
+  "pptx": "archive/2026-10-10-1248.pptx",
+  "txt": "archive/2026-10-10-1248.txt",
+  "stamp": "2026-10-10-1248",
+  "label": "10.10 12:48",
+  "kind": "scheduled"
+ },
+ {
+  "docx": "archive/2026-10-10-0845.docx",
+  "pptx": "archive/2026-10-10-0845.pptx",
+  "txt": "archive/2026-10-10-0845.txt",
+  "stamp": "2026-10-10-0845",
+  "label": "10.10 08:45",
+  "kind": "scheduled"
+ },
+ {
+  "docx": "archive/2026-10-10-0646.docx",
+  "pptx": "archive/2026-10-10-0646.pptx",
+  "txt": "archive/2026-10-10-0646.txt",
+  "stamp": "2026-10-10-0646",
+  "label": "10.10 06:46",
+  "kind": "scheduled"
+ },
+ {
+  "docx": "archive/2026-10-09-1946.docx",
+  "pptx": "archive/2026-10-09-1946.pptx",
+  "txt": "archive/2026-10-09-1946.txt",
+  "stamp": "2026-10-09-1946",
+  "label": "09.10 19:46",
+  "kind": "scheduled"
+ },
+ {
+  "docx": "archive/2026-10-09-1248.docx",
+  "pptx": "archive/2026-10-09-1248.pptx",
+  "txt": "archive/2026-10-09-1248.txt",
+  "stamp": "2026-10-09-1248",
+  "label": "09.10 12:48",
+  "kind": "scheduled"
+ },
+ {
+  "docx": "archive/2026-10-09-0845.docx",
+  "pptx": "archive/2026-10-09-0845.pptx",
+  "txt": "archive/2026-10-09-0845.txt",
+  "stamp": "2026-10-09-0845",
+  "label": "09.10 08:45",
+  "kind": "scheduled"
+ },
+ {
+  "docx": "archive/2026-10-09-0645.docx",
+  "pptx": "archive/2026-10-09-0645.pptx",
+  "txt": "archive/2026-10-09-0645.txt",
+  "stamp": "2026-10-09-0645",
+  "label": "09.10 06:45",
+  "kind": "scheduled"
+ },
+ {
+  "docx": "archive/2026-10-08-2148.docx",
+  "pptx": "archive/2026-10-08-2148.pptx",
+  "txt": "archive/2026-10-08-2148.txt",
+  "stamp": "2026-10-08-2148",
+  "label": "08.10 21:48",
+  "kind": "ondemand"
+ },
+ {
+  "docx": "archive/2026-10-08-1947.docx",
+  "pptx": "archive/2026-10-08-1947.pptx",
+  "txt": "archive/2026-10-08-1947.txt",
+  "stamp": "2026-10-08-1947",
+  "label": "08.10 19:47",
+  "kind": "scheduled"
+ },
+ {
+  "docx": "archive/2026-10-08-1249.docx",
+  "pptx": "archive/2026-10-08-1249.pptx",
+  "txt": "archive/2026-10-08-1249.txt",
+  "stamp": "2026-10-08-1249",
+  "label": "08.10 12:49",
+  "kind": "scheduled"
+ }
+]
